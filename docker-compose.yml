@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: task_manager_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: devuser 
+      POSTGRES_PASSWORD: devpass 
+      POSTGRES_DB: task_manager_db
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
