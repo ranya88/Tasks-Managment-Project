@@ -12,6 +12,7 @@ class Task extends Model
         'status',
         'priority',
         'due_date',
+        'assigned_user_id',
     ];
 
     public function assignedUser()
