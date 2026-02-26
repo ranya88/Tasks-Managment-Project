@@ -16,7 +16,7 @@ class TaskSeeder extends Seeder
 
         foreach ($projects as $project) {
             Task::create([
-                'project_id' => $project->id,
+                //'project_id' => $project->id,
                 'assigned_user_id' => $users->random()->id,
                 'title' => 'Sample Task for ' . $project->name,
                 'description' => 'This is a seeded task.',
