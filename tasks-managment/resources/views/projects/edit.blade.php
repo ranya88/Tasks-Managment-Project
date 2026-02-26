@@ -3,19 +3,26 @@
 @section('content')
 
 <div class="max-w-lg mx-auto">
+
+    {{-- Back link + header --}}
     <div class="mb-6">
-        <a href="{{ route('projects.index') }}" class="inline-flex items-center gap-1 text-sm text-gray-400 hover:text-gray-600 transition-colors duration-150 mb-3">
+        <a href="{{ route('projects.index') }}" class="inline-flex items-center gap-1 text-sm text-base-content/50 hover:text-base-content transition-colors mb-4">
             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
             </svg>
-            Back
+            Back to Projects
         </a>
-        <h1 class="text-xl font-semibold text-gray-900">Edit Project</h1>
+        <h1 class="text-2xl font-bold tracking-tight">Edit Project</h1>
+        <p class="text-base-content/60 text-sm mt-1">Update project details</p>
     </div>
 
+    {{-- Validation errors --}}
     @if($errors->any())
-        <div class="mb-5 px-4 py-3 rounded-md bg-red-50 border border-red-200 text-red-600 text-sm">
-            <ul class="list-disc list-inside space-y-0.5">
+        <div role="alert" class="alert alert-error mb-6">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <ul class="list-disc list-inside text-sm space-y-0.5">
                 @foreach($errors->all() as $error)
                     <li>{{ $error }}</li>
                 @endforeach
@@ -23,37 +30,37 @@
         </div>
     @endif
 
-    <div class="bg-white border border-gray-200 rounded-xl p-6">
-        <form action="{{ route('projects.update', $project) }}" method="POST" class="space-y-4">
-            @csrf
-            @method('PUT')
+    {{-- Form card --}}
+    <div class="card bg-base-100 shadow">
+        <div class="card-body">
+            <form action="{{ route('projects.update', $project) }}" method="POST" class="space-y-5">
+                @csrf
+                @method('PUT')
 
-            <div>
-                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Project Name</label>
-                <input type="text" name="name" id="name" value="{{ old('name', $project->name) }}" required
-                       class="w-full px-3 py-2 rounded-md border border-gray-300 text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition-all duration-150">
-            </div>
+                <div class="form-control">
+                    <label class="label" for="name">
+                        <span class="label-text font-medium">Project Name</span>
+                    </label>
+                    <input type="text" name="name" id="name" value="{{ old('name', $project->name) }}" required
+                           class="input input-bordered w-full {{ $errors->has('name') ? 'input-error' : '' }}">
+                </div>
 
-            <div>
-                <label for="description" class="block text-sm font-medium text-gray-700 mb-1">
-                    Description <span class="text-gray-400 font-normal">(optional)</span>
-                </label>
-                <textarea name="description" id="description" rows="4"
-                          class="w-full px-3 py-2 rounded-md border border-gray-300 text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition-all duration-150 resize-none">{{ old('description', $project->description) }}</textarea>
-            </div>
+                <div class="form-control">
+                    <label class="label" for="description">
+                        <span class="label-text font-medium">Description <span class="text-base-content/40 font-normal">(optional)</span></span>
+                    </label>
+                    <textarea name="description" id="description" rows="4"
+                              class="textarea textarea-bordered w-full resize-none {{ $errors->has('description') ? 'textarea-error' : '' }}">{{ old('description', $project->description) }}</textarea>
+                </div>
 
-            <div class="flex items-center gap-3 pt-1">
-                <button type="submit"
-                        class="flex-1 py-2 rounded-md bg-indigo-500 text-white text-sm font-medium hover:bg-indigo-600 transition-colors duration-150">
-                    Save Changes
-                </button>
-                <a href="{{ route('projects.index') }}"
-                   class="flex-1 text-center py-2 rounded-md border border-gray-200 text-gray-600 text-sm font-medium hover:bg-gray-50 transition-colors duration-150">
-                    Cancel
-                </a>
-            </div>
-        </form>
+                <div class="flex items-center gap-3 pt-2">
+                    <button type="submit" class="btn btn-primary flex-1">Save Changes</button>
+                    <a href="{{ route('projects.index') }}" class="btn btn-ghost flex-1">Cancel</a>
+                </div>
+            </form>
+        </div>
     </div>
+
 </div>
 
 @endsection
