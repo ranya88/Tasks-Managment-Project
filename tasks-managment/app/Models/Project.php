@@ -33,4 +33,3 @@ class Project extends Model
         return $this->hasMany(Task::class);
     }
 }
-
