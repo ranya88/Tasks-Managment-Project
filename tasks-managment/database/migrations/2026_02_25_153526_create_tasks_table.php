@@ -19,6 +19,7 @@ return new class extends Migration
             $table->enum('priority', ['low', 'medium', 'high'])->default('medium');
             $table->date('due_date')->nullable();
             $table->foreignId('assigned_user_id')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('project_id')->nullable()->constrained('projects')->nullOnDelete();
 
             $table->timestamps();
         });
