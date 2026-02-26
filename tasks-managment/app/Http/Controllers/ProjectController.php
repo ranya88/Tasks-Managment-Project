@@ -1,0 +1,75 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Project;
+use Illuminate\Http\Request;
+
+class ProjectController extends Controller
+{
+    // Display all projects
+    public function index()
+    {
+        $projects = Project::with('owner')->latest()->get();
+        return view('projects.index', compact('projects'));
+    }
+
+    // Show create form
+    public function create()
+    {
+        return view('projects.create');
+    }
+
+    // Store new project
+    public function store(Request $request)
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'description' => 'nullable|string',
+    ]);
+
+    Project::create([
+        'name' => $request->name,
+        'description' => $request->description,
+        'owner_id' => 1, // ✅ mock user id for now
+    ]);
+
+    return redirect()->route('projects.index')
+                     ->with('success', 'Project created successfully.');
+}
+
+    // Show single project
+    public function show(Project $project)
+    {
+        return view('projects.show', compact('project'));
+    }
+
+    // Show edit form
+    public function edit(Project $project)
+    {
+        return view('projects.edit', compact('project'));
+    }
+
+    // Update project
+    public function update(Request $request, Project $project)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
+
+        $project->update($request->only('name', 'description'));
+
+        return redirect()->route('projects.index')
+                         ->with('success', 'Project updated successfully.');
+    }
+
+    // Delete project
+    public function destroy(Project $project)
+    {
+        $project->delete();
+
+        return redirect()->route('projects.index')
+                         ->with('success', 'Project deleted successfully.');
+    }
+}
